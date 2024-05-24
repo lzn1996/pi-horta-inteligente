@@ -1,3 +1,10 @@
+<?php
+require_once './model/SQLConnection.php';
+require_once './model/MongoConnection.php';
+SQLConnection::Connect();
+MongoConnection::Connect();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
