@@ -1,0 +1,35 @@
+body,
+html {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
+}
+.form-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+.btn-primary {
+  background-color: green;
+  border-color: green;
+}
+.btn-primary:hover {
+  background-color: darkgreen;
+  border-color: darkgreen;
+}
+.btn-link {
+  color: green;
+}
+.btn-link:hover {
+  color: darkgreen;
+}
+.modal-header {
+  justify-content: center;
+}
+.modal-header .btn-close {
+  position: absolute;
+  right: 1rem;
+}
