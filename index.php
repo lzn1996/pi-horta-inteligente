@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/login.css">
+    <script src="index.js" defer></script>
 </head>
 
 <body>
@@ -58,7 +59,7 @@
                             <input type="password" class="form-control" id="confirmNewPassword" placeholder="Confira sua senha">
                             <p id="confirmMessage" style='color: red;'></p>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Criar conta</button>
+                        <button type="submit" id="createAccBtn" class="btn btn-light w-100" disabled>Criar conta</button>
                     </form>
                 </div>
             </div>
@@ -66,28 +67,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.getElementById('createAccountForm').addEventListener('keyup', event => {
-            const password = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmNewPassword').value;
-            const errorMessageParagraph = document.getElementById('errorMessage');
-            const confirmMessageParagraph = document.getElementById('confirmMessage');
 
-            if (password.length < 8 && password.length > 0) {
-                errorMessageParagraph.innerText = 'A senha deve ter no mínimo 8 caracteres.';
-                event.preventDefault();
-            } else {
-                errorMessageParagraph.innerText = '';
-            }
 
-            if (password !== confirmPassword) {
-                confirmMessageParagraph.innerText = 'As senhas não coincidem.';
-                event.preventDefault();
-            } else {
-                confirmMessageParagraph.innerText = '';
-            }
-        });
-    </script>
 </body>
 
 </html>

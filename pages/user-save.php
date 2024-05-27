@@ -1,9 +1,6 @@
 <?php
 require "../model/User.php";
 
-$successMsg = '';
-$errorMsg = '';
-
 $name = $_POST['name'];
 $password = $_POST['password'];
 $email = $_POST['email'];
@@ -12,9 +9,9 @@ $user = new User($name, $password, $email);
 $isRegisterAttemptOk = $user->save();
 
 if ($isRegisterAttemptOk) {
-    $successMsg = 'Usuário cadastrado com sucesso!';
-    $errorMsg = '';
+    header("Location: ../index.php?success=true");
+    exit();
 } else {
-    $errorMsg = 'Já existe um usuário cadastrado com esse email.';
-    $successMsg = '';
+    header("Location: ../index.php?success=false");
+    exit();
 }
