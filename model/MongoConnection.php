@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 class MongoConnection
 {
@@ -16,13 +16,34 @@ class MongoConnection
 
         $mongoUsername = $envVariables['MONGO_DB_USERNAME'];
         $mongoPassword = $envVariables['MONGO_DB_PASS'];
+        $mongoLink = $envVariables['MONGO_CONNECT_LINK'];
 
         try {
-            $client = new MongoDB\Client("mongodb+srv://$mongoUsername:$mongoPassword@smartgarden.t53ywku.mongodb.net");
+            $client = new MongoDB\Client($mongoLink);
             echo "Conexão com o MongoDB estabelecida com sucesso! <br>";
             return $client;
         } catch (Exception $e) {
             echo "Erro ao conectar ao MongoDB: " . $e->getMessage() . "<br>";
+            return null;
+        }
+    }
+
+
+    public static function CreateCollection($dbName, $collectionName)
+    {
+        try {
+            $client = self::Connect(); // Conecte-se ao MongoDB
+            if ($client) {
+                $database = $client->selectDatabase($dbName); // Selecione o banco de dados
+                $collection = $database->createCollection($collectionName); // Crie a coleção
+                echo "Coleção '$collectionName' criada com sucesso no banco de dados '$dbName'.<br>";
+                return $collection;
+            } else {
+                echo "Não foi possível criar a coleção. Falha na conexão com o MongoDB.<br>";
+                return null;
+            }
+        } catch (Exception $e) {
+            echo "Erro ao criar coleção: " . $e->getMessage() . "<br>";
             return null;
         }
     }

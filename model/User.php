@@ -15,7 +15,7 @@ class User
     {
         $this->id = Uuid::uuid4();
         $this->name = strtolower(trim($name));
-        $this->password = hash('sha256', $password);
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->email = $email;
         } else {
