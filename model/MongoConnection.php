@@ -14,8 +14,6 @@ class MongoConnection
             $envVariables[trim($key)] = trim($value);
         }
 
-        $mongoUsername = $envVariables['MONGO_DB_USERNAME'];
-        $mongoPassword = $envVariables['MONGO_DB_PASS'];
         $mongoLink = $envVariables['MONGO_CONNECT_LINK'];
 
         try {
@@ -32,10 +30,10 @@ class MongoConnection
     public static function CreateCollection($dbName, $collectionName)
     {
         try {
-            $client = self::Connect(); // Conecte-se ao MongoDB
+            $client = self::Connect();
             if ($client) {
-                $database = $client->selectDatabase($dbName); // Selecione o banco de dados
-                $collection = $database->createCollection($collectionName); // Crie a coleção
+                $database = $client->selectDatabase($dbName);
+                $collection = $database->createCollection($collectionName);
                 echo "Coleção '$collectionName' criada com sucesso no banco de dados '$dbName'.<br>";
                 return $collection;
             } else {
