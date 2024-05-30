@@ -1,10 +1,10 @@
 <?php
 
-require "./model/MongoConnection.php";
+// require "./model/MongoConnection.php";
 
 
-MongoConnection::Connect();
-MongoConnection::CreateCollection('smartgarden', 'teste_pelo_php');
+// MongoConnection::Connect();
+// MongoConnection::CreateCollection('smartgarden', 'teste_pelo_php');
 
 ?>
 
