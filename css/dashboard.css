@@ -144,3 +144,13 @@ a.sidebar-link:hover {
   transform: rotate(45deg);
   transition: all 0.2s ease-out;
 }
+
+.card-img-container {
+  position: relative;
+}
+
+.delete-checkbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
