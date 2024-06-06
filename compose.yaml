@@ -1,0 +1,15 @@
+# Crie um ambiente de desenvolvimento com PHP e MongoDB. Use o proprio servidor web do PHP.
+
+services:
+  app:
+    image: php:7.4-apache
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
