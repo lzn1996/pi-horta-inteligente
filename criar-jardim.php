@@ -37,7 +37,7 @@
             </div>
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
+                    <a href="dashboard.php" class="sidebar-link">
                         <i class="lni lni-layout"></i>
                         <span>Dashboard</span>
                     </a>
@@ -183,7 +183,10 @@
             </div>
         </div>
     </div>
+
     <script src="js/criar-jardim.js"></script>
+    <script src="js/sidebar.js"></script>
+
 </body>
 
 </html>
