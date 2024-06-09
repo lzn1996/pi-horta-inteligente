@@ -7,9 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sidebar With Bootstrap</title>
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        .humidity-chart-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 150px;
+        }
+    </style>
 </head>
 
 <body>
@@ -37,50 +48,6 @@
                         <span>Criar Jardim</span></a>
                     </a>
                 </li>
-                <!-- <li class="sidebar-item">
-                    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
-                        <i class="lni lni-protection"></i>
-                        <span>Auth</span>
-                    </a>
-                    <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">Num sei</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">Num sei</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                        data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
-                        <i class="lni lni-layout"></i>
-                        <span>Num sei</span>
-                    </a>
-                    <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                                data-bs-target="#multi-two" aria-expanded="false" aria-controls="multi-two">
-                                Num sei
-                            </a>
-                            <ul id="multi-two" class="sidebar-dropdown list-unstyled collapse">
-                                <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link">Link 1</a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link">Link 2</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li> -->
-                <!-- <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
-                        <i class="lni lni-popup"></i>
-                        <span>Numsei</span>
-                    </a>
-                </li> -->
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link">
                         <i class="lni lni-cog"></i>
@@ -100,10 +67,17 @@
 
                 <div class="container mt-5">
                     <!-- Navigation Bar -->
-                    <nav class="navbar navbar-light bg-light">
-                        <a class="navbar-brand" href="#">Garden Manager</a>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createGardenModal">Create
-                            Garden</button>
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light p-3 rounded">
+                        <a class="navbar-brand" href="#">Gerenciar Jardins</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <div class="btn-group ms-auto" role="group" aria-label="Button group">
+                                <button class="btn btn-primary me-3 rounded" data-bs-toggle="modal" data-bs-target="#createGardenModal">Criar Jardim</button>
+                                <button class="btn btn-danger rounded" id="deleteSelected">Deletar Selecionados</button>
+                            </div>
+                        </div>
                     </nav>
 
                     <!-- Cards Container -->
@@ -116,28 +90,70 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="createGardenModalLabel">Add Plant/Crop</h5>
+                                    <h5 class="modal-title" id="createGardenModalLabel">Adicionar planta/Cultura</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <form id="gardenForm">
                                         <div class="mb-3">
-                                            <label for="plantName" class="form-label">Plant/Crop Name</label>
+                                            <label for="plantName" class="form-label">Nome da planta/cultura</label>
                                             <input type="text" class="form-control" id="plantName" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="plantType" class="form-label">Type</label>
+                                            <label for="plantType" class="form-label">Tipo</label>
                                             <input type="text" class="form-control" id="plantType" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="plantDescription" class="form-label">Description</label>
+                                            <label for="plantDescription" class="form-label">Descrição</label>
                                             <textarea class="form-control" id="plantDescription" rows="3" required></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="plantImage" class="form-label">Image</label>
+                                            <label for="sensorId" class="form-label">Sensor ID</label>
+                                            <input type="text" class="form-control" id="sensorId" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="plantImage" class="form-label">Imagem</label>
                                             <input type="file" class="form-control" id="plantImage" accept="image/*" required>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="submit" class="btn btn-primary">Salvar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modify Modal -->
+                    <div class="modal fade" id="modifyGardenModal" tabindex="-1" aria-labelledby="modifyGardenModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modifyGardenModalLabel">Modificar planta/cultura</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="modifyForm">
+                                        <input type="hidden" id="modifyCardId">
+                                        <div class="mb-3">
+                                            <label for="modifyPlantName" class="form-label">Nome da planta/cultura</label>
+                                            <input type="text" class="form-control" id="modifyPlantName" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="modifyPlantType" class="form-label">Tipo</label>
+                                            <input type="text" class="form-control" id="modifyPlantType" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="modifyPlantDescription" class="form-label">Descrição</label>
+                                            <textarea class="form-control" id="modifyPlantDescription" rows="3" required></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="modifySensorId" class="form-label">Sensor ID</label>
+                                            <input type="text" class="form-control" id="modifySensorId" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="modifyPlantImage" class="form-label">Imagem</label>
+                                            <input type="file" class="form-control" id="modifyPlantImage" accept="image/*">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Salvar mudanças</button>
                                     </form>
                                 </div>
                             </div>
@@ -145,57 +161,29 @@
                     </div>
                 </div>
 
-                <script>
-                    $(document).ready(function() {
-                        $('#gardenForm').on('submit', function(event) {
-                            event.preventDefault();
-
-                            // Get form values
-                            const plantName = $('#plantName').val();
-                            const plantType = $('#plantType').val();
-                            const plantDescription = $('#plantDescription').val();
-                            const plantImageFile = $('#plantImage')[0].files[0];
-
-                            if (plantImageFile) {
-                                const reader = new FileReader();
-                                reader.onload = function(e) {
-                                    const plantImage = e.target.result;
-
-                                    // Create a new card
-                                    const cardHtml = `
-                                        <div class="col-md-4 mb-3">
-                                        <div class="card">
-                                            <img src="${plantImage}" class="card-img-top" alt="${plantName}">
-                                            <div class="card-body">
-                                            <h5 class="card-title">${plantName}</h5>
-                                            <h6 class="card-subtitle mb-2 text-muted">${plantType}</h6>
-                                            <p class="card-text">${plantDescription}</p>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    `;
-
-                                    // Append the card to the container
-                                    $('#cardsContainer').append(cardHtml);
-
-                                    // Clear the form
-                                    $('#gardenForm')[0].reset();
-
-                                    // Close the modal using Bootstrap's modal method
-                                    var modal = bootstrap.Modal.getInstance(document.getElementById('createGardenModal'));
-                                    modal.hide();
-                                }
-                                reader.readAsDataURL(plantImageFile);
-                            }
-                        });
-                    });
-                </script>
+                <!-- Delete Confirmation Modal -->
+                <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirmação de exclusão</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Tem certeza de que deseja excluir este cartão?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" id="confirmDelete">Excluir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-    <script src="js/dashboard.js"></script>
+    <script src="js/criar-jardim.js"></script>
 </body>
 
 </html>
