@@ -13,7 +13,7 @@
 
 <body>
     <div class="wrapper">
-        <aside id="sidebar">
+        <aside id="sidebar" class="expand">
             <div class="d-flex">
                 <button class="toggle-btn" type="button">
                     <!-- <i class="lni lni-grid-alt"></i> -->

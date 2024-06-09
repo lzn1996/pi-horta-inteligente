@@ -2,7 +2,6 @@
 require "SQLConnection.php";
 require "../vendor/autoload.php";
 
-use Ramsey\Uuid\Uuid;
 
 class User
 {
@@ -13,7 +12,7 @@ class User
 
     public function __construct($name, $password, $email)
     {
-        $this->id = Uuid::uuid4();
+        $this->id = time();
         $this->name = strtolower(trim($name));
         $this->password = password_hash($password, PASSWORD_DEFAULT);
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -42,7 +41,7 @@ class User
                 return false;
             }
 
-            $stmt = $conexao->prepare("INSERT INTO users (user_id, name, password, email) VALUES (:id, :name, :email, :password)");
+            $stmt = $conexao->prepare("INSERT INTO users (user_id, name, email, password) VALUES (:id, :name, :email, :password)");
             $stmt->bindParam(':id', $this->id);
             $stmt->bindParam(':name', $this->name);
             $stmt->bindParam(':password', $this->password);
