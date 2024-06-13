@@ -1,6 +1,6 @@
 <?php
 require "SQLConnection.php";
-require "../vendor/autoload.php";
+require '../vendor/autoload.php';
 
 
 class User
@@ -12,7 +12,7 @@ class User
 
     public function __construct($name, $password, $email)
     {
-        $this->id = time();
+        $this->id = uniqid();
         $this->name = strtolower(trim($name));
         $this->password = password_hash($password, PASSWORD_DEFAULT);
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -56,6 +56,26 @@ class User
             }
         } catch (PDOException $e) {
             error_log('Erro ao salvar usuário: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public static function authenticate($email, $password)
+    {
+        try {
+            $conexao = SQLConnection::connect();
+            $stmt = $conexao->prepare("SELECT * FROM users WHERE email = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user && password_verify($password, $user['password'])) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            echo "Erro: " . $e->getMessage();
             return false;
         }
     }
