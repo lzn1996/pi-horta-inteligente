@@ -7,8 +7,11 @@ class SQLConnection
         $envVariables = [];
 
         foreach ($envFile as $line) {
-            list($key, $value) = explode('=', $line, 2);
-            $envVariables[trim($key)] = trim($value);
+            $parts = explode('=', $line, 2);
+            if (count($parts) == 2) { // Ensure that both key and value are present
+                list($key, $value) = $parts;
+                $envVariables[trim($key)] = trim($value);
+            }
         }
 
         $requiredEnvVars = ['SQL_DB_HOST', 'SQL_PORT', 'SQL_DB_NAME', 'SQL_DB_USERNAME'];

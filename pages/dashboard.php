@@ -150,56 +150,6 @@ require './check-session.php';
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="card">
-                                <div class="card-img-container">
-                                    <img src="../img/tomate.webp" class="card-img-top" alt="#">
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">Tomate</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">Tipo:</h6>
-                                    <p class="card-text">Descrição: </p>
-                                    <p class="card-text"><small class="text-muted">Sensor ID: </small></p>
-                                    <div class="humidity-chart-container">
-                                        <canvas class="humidityChart" width="100"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 mb-3">
-                            <div class="card">
-                                <div class="card-img-container">
-                                    <img src="../img/tomate.webp" class="card-img-top" alt="#">
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">Tomate</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">Tipo:</h6>
-                                    <p class="card-text">Descrição: </p>
-                                    <p class="card-text"><small class="text-muted">Sensor ID: </small></p>
-                                    <div class="humidity-chart-container">
-                                        <canvas class="humidityChart" width="100"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 mb-3">
-                            <div class="card">
-                                <div class="card-img-container">
-                                    <img src="../img/tomate.webp" class="card-img-top" alt="#">
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">Tomate</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">Tipo:</h6>
-                                    <p class="card-text">Descrição: </p>
-                                    <p class="card-text"><small class="text-muted">Sensor ID: </small></p>
-                                    <div class="humidity-chart-container">
-                                        <canvas class="humidityChart" width="100"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Repita o bloco de colunas (col-md-3 mb-3) para adicionar mais cards -->
 

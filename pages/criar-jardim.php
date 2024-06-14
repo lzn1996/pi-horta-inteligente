@@ -27,21 +27,10 @@ if (isset($_GET['garden-created-error'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sidebar With Bootstrap</title>
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- <link rel="stylesheet" href="../css/sidebar.css"> -->
     <link rel="stylesheet" href="../css/dashboard.css">
-    <style>
-        .humidity-chart-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 150px;
-        }
-    </style>
 </head>
 
 <body>
@@ -49,8 +38,7 @@ if (isset($_GET['garden-created-error'])) {
         <aside id="sidebar" class="expand">
             <div class="d-flex">
                 <button class="toggle-btn" type="button">
-                    <!-- <i class="lni lni-grid-alt"></i> -->
-                    <img src="../img/foia.png" class="lni lni-grid-alt foia" alt="uma foia verde">
+                    <img class=foia src="../img/foia.png" alt="">
                 </button>
                 <div class="sidebar-logo">
                     <a href="#">SmartGarden</a>
@@ -69,6 +57,7 @@ if (isset($_GET['garden-created-error'])) {
                         <span>Meus Jardins</span></a>
                     </a>
                 </li>
+
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link">
                         <i class="lni lni-cog"></i>
@@ -77,14 +66,14 @@ if (isset($_GET['garden-created-error'])) {
                 </li>
             </ul>
             <div class="sidebar-footer">
-                <a href="/pi-horta-inteligente/pages/logout.php" class="sidebar-link">
+                <a href="#" class="sidebar-link">
                     <i class="lni lni-exit"></i>
                     <span>Logout</span>
                 </a>
             </div>
         </aside>
         <div class="main p-3">
-            <div class="text-center">
+            <div>
 
                 <div class="container mt-5">
                     <!-- Navigation Bar -->
@@ -140,11 +129,8 @@ if (isset($_GET['garden-created-error'])) {
                                             <a href="/pi-horta-inteligente/pages/edit-garden.php/?garden-id=<?= $id ?>" class="btn btn-warning"><i class="lni lni-pencil"></i></a>
                                             <a href="/pi-horta-inteligente/pages/delete-garden.php/?garden-id=<?= $id ?>" class="btn btn-danger"><i class="lni lni-trash-can"></i></a>
                                         </div>
-                                        <p></p>
-                                        <p></p>
-                                        <div class="d-flex justify-content-center">
-                                            <a href="#" class="btn btn-primary">Detalhes</a>
-                                        </div>
+
+
                                     </div>
                                 </div>
                             </div>
@@ -158,25 +144,49 @@ if (isset($_GET['garden-created-error'])) {
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="createGardenModalLabel">Adicionar planta/Cultura</h5>
+                                    <h5 class="modal-title" id="createGardenModalLabel">Adicionar planta/cultura</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <form id="gardenForm" method='post' action="../pages/garden-save.php" enctype="multipart/form-data">
                                         <div class="mb-3">
-                                            <label for="plantName" class="form-label">Nome da planta/cultura</label>
+                                            <label for="plantName" class="form-label" style="text-align: initial;">Nome da planta/cultura:</label>
                                             <input type="text" class="form-control" id="plantName" name="plantName" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="plantType" class="form-label">Tipo</label>
-                                            <input type="text" class="form-control" id="plantType" name="plantType" required>
+                                            <label class="form-label" style="text-align: initial;">Tipo de plantio:</label>
+                                            <div style="display: flex; gap: 1rem; align-items: center;">
+                                                <div>
+                                                    <input type="radio" id="planta" name="plantType" value="Planta" required>
+                                                    <label for="planta" style="text-align: initial;">Jardim</label>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" id="cultura" name="plantType" value="Cultura" required>
+                                                    <label for="cultura" style="text-align: initial;">Cultura</label>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="plantDescription" class="form-label">Descrição</label>
-                                            <textarea class="form-control" id="plantDescription" name="plantDescription" rows="3" required></textarea>
+                                            <label for="soilMoisture" class="form-label" style="text-align: initial;">Umidade do solo desejada:</label>
+                                            <input type="number" class="form-control" id="soilMoisture" name="soilMoisture" min="0" max="100" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="plantingDate" class="form-label" style="text-align: initial;">Data de plantio:</label>
+                                            <input type="date" class="form-control" id="plantingDate" name="plantingDate" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="harvestDate" class="form-label" style="text-align: initial;">Data estimada de colheita:</label>
+                                            <input type="date" class="form-control" id="harvestDate" name="harvestDate">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="additionalNotes" class="form-label" style="text-align: initial;">Notas adicionais:</label>
+                                            <textarea class="form-control" id="additionalNotes" name="additionalNotes" rows="3"></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="plantImage" class="form-label">Imagem</label>
+                                            <label for="plantImage" class="form-label" style="text-align: initial;">Imagem</label>
                                             <input type="file" class="form-control" id="plantImage" name="plantImage" accept="image/*" required>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Salvar</button>
@@ -186,74 +196,13 @@ if (isset($_GET['garden-created-error'])) {
                         </div>
                     </div>
 
-                    <!-- Modify Modal -->
-                    <div class="modal fade" id="modifyGardenModal" tabindex="-1" aria-labelledby="modifyGardenModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modifyGardenModalLabel">Modificar planta/cultura</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="modifyForm">
-                                        <input type="hidden" id="modifyCardId">
-                                        <div class="mb-3">
-                                            <label for="modifyPlantName" class="form-label">Nome da planta/cultura</label>
-                                            <input type="text" class="form-control" id="modifyPlantName" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="modifyPlantType" class="form-label">Tipo</label>
-                                            <input type="text" class="form-control" id="modifyPlantType" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="modifyPlantDescription" class="form-label">Descrição</label>
-                                            <textarea class="form-control" id="modifyPlantDescription" rows="3" required></textarea>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="modifySensorId" class="form-label">Sensor ID</label>
-                                            <input type="text" class="form-control" id="modifySensorId" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="modifyPlantImage" class="form-label">Imagem</label>
-                                            <input type="file" class="form-control" id="modifyPlantImage" accept="image/*">
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Salvar mudanças</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-
-                <!-- Delete Confirmation Modal -->
-                <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirmação de exclusão</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Tem certeza de que deseja excluir este cartão?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-danger" id="confirmDelete">Excluir</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
-    </div>
 
-    <!-- <script src="js/criar-jardim.js"></script> -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/sidebar.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+        <script src="../js/sidebar.js"></script>
 
 </body>
 
