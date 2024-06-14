@@ -1,8 +1,10 @@
 <?php
 require "../model/Garden.php";
-$gardens = Garden::getAll();
-$gardensQuantity = Garden::count();
+session_start();
+$userId = $_SESSION['user_id']['id'];
+$gardens = Garden::getAllGardensByUserId($userId);
 
+$gardensQuantity = Garden::count();
 
 $gardenCreatedSuccessMsg = '';
 $gardenCreatedErrorMsg = '';
@@ -14,10 +16,6 @@ if (isset($_GET['garden-created-success']) && $_GET['garden-created-success'] ==
 if (isset($_GET['garden-created-error'])) {
     $gardenCreatedErrorMsg = "Não foi possível criar o jardim." . urldecode($_GET['garden-created-error']);
 }
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -79,7 +77,7 @@ if (isset($_GET['garden-created-error'])) {
                 </li>
             </ul>
             <div class="sidebar-footer">
-                <a href="./pages/logout.php" class="sidebar-link">
+                <a href="/pi-horta-inteligente/pages/logout.php" class="sidebar-link">
                     <i class="lni lni-exit"></i>
                     <span>Logout</span>
                 </a>
@@ -147,6 +145,8 @@ if (isset($_GET['garden-created-error'])) {
                                             <a href="../pages/edit-garden.php/?garden-id=<?= $id ?>" class="btn btn-warning"><i class="lni lni-pencil"></i></a>
                                             <a href="../pages/delete-garden.php/?garden-id=<?= $id ?>" class="btn btn-danger"><i class="lni lni-trash-can"></i></a>
                                         </div>
+                                        <p></p>
+                                        <p></p>
                                         <div class="d-flex justify-content-center">
                                             <a href="#" class="btn btn-primary">Detalhes</a>
                                         </div>

@@ -31,7 +31,7 @@ class User
                 return false;
             }
 
-            $stmt_check = $conexao->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
+            $stmt_check = $conexao->prepare("SELECT COUNT(*) FROM user WHERE email = :email");
             $stmt_check->bindParam(':email', $this->email);
             $stmt_check->execute();
             $result = $stmt_check->fetchColumn();
@@ -41,7 +41,7 @@ class User
                 return false;
             }
 
-            $stmt = $conexao->prepare("INSERT INTO users (user_id, name, email, password) VALUES (:id, :name, :email, :password)");
+            $stmt = $conexao->prepare("INSERT INTO user (id, name, email, password) VALUES (:id, :name, :email, :password)");
             $stmt->bindParam(':id', $this->id);
             $stmt->bindParam(':name', $this->name);
             $stmt->bindParam(':password', $this->password);
@@ -64,7 +64,7 @@ class User
     {
         try {
             $conexao = SQLConnection::connect();
-            $stmt = $conexao->prepare("SELECT * FROM users WHERE email = :email");
+            $stmt = $conexao->prepare("SELECT * FROM user WHERE email = :email");
             $stmt->bindParam(':email', $email);
             $stmt->execute();
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -74,6 +74,22 @@ class User
             } else {
                 return false;
             }
+        } catch (PDOException $e) {
+            echo "Erro: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public static function getUserId($email)
+    {
+        try {
+            $conexao = SQLConnection::connect();
+            $stmt = $conexao->prepare("SELECT id FROM user WHERE email = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+            $id = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $id;
         } catch (PDOException $e) {
             echo "Erro: " . $e->getMessage();
             return false;

@@ -1,5 +1,6 @@
 <?php
 require './authenticate-user.php';
+require '../model/User.php';
 
 
 $password = '';
@@ -9,13 +10,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $email = $_POST['email'];
 }
-
-
 if (!empty($password) && !empty($email)) {
     $isUserAlreadyExists = authenticate($email, $password);
     if ($isUserAlreadyExists) {
         session_start();
         $_SESSION['user_email'] = $email;
+        $_SESSION['user_id'] = User::getUserId($email);
         header('Location: ../pages/criar-jardim.php');
         exit();
     } else {

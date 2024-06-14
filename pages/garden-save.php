@@ -1,6 +1,7 @@
 <?php
 
 require '../model/Garden.php';
+session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['plantName']) && isset($_POST['plantType']) && isset($_POST['plantDescription']) && isset($_FILES['plantImage'])) {
@@ -14,8 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             move_uploaded_file($tmp_name, "../uploads/$fileName");
 
             $garden = new Garden($plantName, $plantType, $plantDescription, $fileName);
-
-            $success = $garden->create();
+            $userId = $_SESSION['user_id']['id'];
+            $success = $garden->create($userId);
 
             if ($success) {
                 $queryString = http_build_query(['garden-created-success' => 'true']);

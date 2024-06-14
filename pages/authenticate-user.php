@@ -33,7 +33,7 @@ function authenticate($email, $password)
 {
     try {
         $conexao = Connect();
-        $stmt = $conexao->prepare("SELECT * FROM users WHERE email = :email");
+        $stmt = $conexao->prepare("SELECT * FROM user WHERE email = :email");
         $stmt->bindParam(':email', $email);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);

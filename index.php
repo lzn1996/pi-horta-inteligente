@@ -1,10 +1,10 @@
 <?php
 
-// require "./model/MongoConnection.php";
+require "./model/MongoConnection.php";
 
 
 // MongoConnection::Connect();
-// MongoConnection::CreateCollection('smartgarden', 'teste_pelo_php');
+// MongoConnection::CreateCollection('smartgarden', 'local');
 $failedInAuthenticationErrorMessage = '';
 
 if (isset($_GET['user-invalid']) && $_GET['user-invalid'] === 'true') {
@@ -40,11 +40,11 @@ if (isset($_GET['user-invalid']) && $_GET['user-invalid'] === 'true') {
         <form id="loginForm" method="post" action='./pages/check-user.php'>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
             </div>
             <button type="submit" class="btn btn-primary w-100">Login</button>
             <div class="mt-3 d-flex justify-content-between">

@@ -20,17 +20,18 @@ class Garden
         $this->plantImage = $plantImage;
     }
 
-    public function create()
+    public function create($userId)
     {
         try {
             $conexao = SQLConnection::connect();
 
-            $stmt = $conexao->prepare("INSERT INTO garden (id, plant_name, plant_type, plant_description, plant_image) VALUES (:id, :plantName, :plantType, :plantDescription, :plantImage)");
+            $stmt = $conexao->prepare("INSERT INTO garden (id, plant_name, plant_type, plant_description, plant_image, user_id) VALUES (:id, :plantName, :plantType, :plantDescription, :plantImage, :user_id)");
             $stmt->bindParam(':id', $this->id);
             $stmt->bindParam(':plantName', $this->plantName);
             $stmt->bindParam(':plantType', $this->plantType);
             $stmt->bindParam(':plantDescription', $this->plantDescription);
             $stmt->bindParam(':plantImage', $this->plantImage);
+            $stmt->bindParam(':user_id', $userId);
 
             $stmt->execute();
 
@@ -46,12 +47,13 @@ class Garden
         }
     }
 
-    public static function getAll()
+    public static function getAllGardensByUserId($userId)
     {
         try {
             $conexao = SQLConnection::connect();
 
-            $stmt = $conexao->prepare("SELECT * FROM garden");
+            $stmt = $conexao->prepare("SELECT * FROM garden WHERE user_id = :userId");
+            $stmt->bindParam(':userId', $userId, PDO::PARAM_STR);
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -65,7 +67,7 @@ class Garden
     {
         try {
             $conexao = SQLConnection::connect();
-
+            print('entrou aq');
             $stmt = $conexao->prepare("DELETE FROM garden WHERE id = :id");
             $stmt->bindParam(':id', $id);
 
