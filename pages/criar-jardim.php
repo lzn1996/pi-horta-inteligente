@@ -96,13 +96,8 @@ if (isset($_GET['garden-created-error'])) {
 
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <div class="btn-group ms-auto" role="group" aria-label="Button group">
-                                <?php if ($gardensQuantity < 1) {
-                                    echo '
-                                                            <button class="btn btn-primary me-3 rounded" data-bs-toggle="modal" data-bs-target="#createGardenModal">Criar Jardim</button>
+                                <button class="btn btn-primary me-3 rounded" data-bs-toggle="modal" data-bs-target="#createGardenModal">Criar Jardim</button>
 
-                            ';
-                                }
-                                ?>
                                 <?php if ($gardensQuantity > 1) {
                                     echo '
                                     <a type="button" href="../pages/delete-all-garden.php" class="btn btn-danger rounded" id="deleteSelected">Deletar todos</a>
@@ -142,8 +137,8 @@ if (isset($_GET['garden-created-error'])) {
                                         <h5 class="card-title"><?php echo $plantName; ?></h5>
                                         <p class="card-text"><?php echo $plantDescription; ?></p>
                                         <div class="position-absolute" style='top: 5px; right: 5px'>
-                                            <a href="../pages/edit-garden.php/?garden-id=<?= $id ?>" class="btn btn-warning"><i class="lni lni-pencil"></i></a>
-                                            <a href="../pages/delete-garden.php/?garden-id=<?= $id ?>" class="btn btn-danger"><i class="lni lni-trash-can"></i></a>
+                                            <a href="/pi-horta-inteligente/pages/edit-garden.php/?garden-id=<?= $id ?>" class="btn btn-warning"><i class="lni lni-pencil"></i></a>
+                                            <a href="/pi-horta-inteligente/pages/delete-garden.php/?garden-id=<?= $id ?>" class="btn btn-danger"><i class="lni lni-trash-can"></i></a>
                                         </div>
                                         <p></p>
                                         <p></p>

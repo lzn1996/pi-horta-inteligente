@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3312
--- Tempo de geração: 14/06/2024 às 03:41
+-- Tempo de geração: 14/06/2024 às 04:49
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.0.30
 
@@ -33,15 +33,17 @@ CREATE TABLE `garden` (
   `plant_type` varchar(100) NOT NULL,
   `plant_description` text NOT NULL,
   `plant_image` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `garden`
 --
 
-INSERT INTO `garden` (`id`, `plant_name`, `plant_type`, `plant_description`, `plant_image`, `created_at`) VALUES
-('666b2495b1aba', 'dasdsa', 'sadsa', 'asdas', 'fullsize_2020_06_05_09_Logo-268264_6769_091032054_1452812056.jpg', '2024-06-13 16:55:49');
+INSERT INTO `garden` (`id`, `plant_name`, `plant_type`, `plant_description`, `plant_image`, `created_at`, `user_id`) VALUES
+('666bafb04efa7', 'horta 1', 'dasd', 'asdaas', 'fullsize_2020_06_05_09_Logo-268264_6769_091032054_1452812056.jpg', '2024-06-14 02:49:20', '666ba2b29b3bc'),
+('666bafb6a5d45', 'horta 2', 'dasd', 'asdsaas', 'fullsize_2020_06_05_09_Logo-268264_6769_091032054_1452812056.jpg', '2024-06-14 02:49:26', '666ba2b29b3bc');
 
 -- --------------------------------------------------------
 
@@ -61,28 +63,30 @@ CREATE TABLE `sensor` (
 --
 
 INSERT INTO `sensor` (`id`, `garden_id`, `humidity_value`, `recorded_at`) VALUES
-('666b2495b551e', '666b2495b1aba', 0.00, '2024-06-13 16:55:49');
+('666bafb051df7', '666bafb04efa7', 0.00, '2024-06-14 02:49:20'),
+('666bafb6a9714', '666bafb6a5d45', 0.00, '2024-06-14 02:49:26');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `users`
+-- Estrutura para tabela `user`
 --
 
-CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL,
+CREATE TABLE `user` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `users`
+-- Despejando dados para a tabela `user`
 --
 
-INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `created_at`) VALUES
-(666, 'admin', 'admin@admin.com', '$2y$10$WjaWYRJLpFMQAmIxnceIsugS.KT6Z1b9JKuE0y2xBNikVZJFCya2u', '2024-06-13 14:12:57');
+INSERT INTO `user` (`id`, `name`, `email`, `password`, `created_at`) VALUES
+('666ba27da6082', 'admin', 'admin@admin.com', '$2y$10$2Bu7Q9TwBS55.Y4D38i7QOb1yNvgtnwVNRL2T8Jdknw2GhzKLYYEa', '2024-06-14 01:53:01'),
+('666ba2b29b3bc', 'teste', 'teste@teste.com', '$2y$10$YCmbOSdDTTg/DtgR7zCbMO1grU8ArN/adE2BfO01P5gUgUiuciJW.', '2024-06-14 01:53:54');
 
 --
 -- Índices para tabelas despejadas
@@ -92,7 +96,8 @@ INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `created_at`) VALUE
 -- Índices de tabela `garden`
 --
 ALTER TABLE `garden`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_garden_user` (`user_id`);
 
 --
 -- Índices de tabela `sensor`
@@ -102,25 +107,20 @@ ALTER TABLE `sensor`
   ADD KEY `fk_garden_id` (`garden_id`);
 
 --
--- Índices de tabela `users`
+-- Índices de tabela `user`
 --
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`),
-  ADD UNIQUE KEY `email_unico` (`email`);
-
---
--- AUTO_INCREMENT para tabelas despejadas
---
-
---
--- AUTO_INCREMENT de tabela `users`
---
-ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1717957789;
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Restrições para tabelas despejadas
 --
+
+--
+-- Restrições para tabelas `garden`
+--
+ALTER TABLE `garden`
+  ADD CONSTRAINT `fk_garden_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 
 --
 -- Restrições para tabelas `sensor`

@@ -2,25 +2,45 @@
 
 require '../model/Garden.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
-    $id = $_POST['id'];
-    $plantName = $_POST['plantName'] ?? null;
-    $plantType = $_POST['plantType'] ?? null;
-    $plantDescription = $_POST['plantDescription'] ?? null;
-    $newPlantImage = $_FILES['plantImage'] ?? null;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['id'])) {
+        $id = $_POST['id'];
 
-    $success = Garden::update($id, $plantName, $plantType, $plantDescription, $newPlantImage);
+        $updateParams = ['id' => $id];
 
-    var_dump($success);
+        if (isset($_POST['plantName'])) {
+            $updateParams['plantName'] = $_POST['plantName'];
+        }
+        if (isset($_POST['plantType'])) {
+            $updateParams['plantType'] = $_POST['plantType'];
+        }
+        if (isset($_POST['plantDescription'])) {
+            $updateParams['plantDescription'] = $_POST['plantDescription'];
+        }
+        if ($_FILES['plantImage']['error'] === UPLOAD_ERR_OK) {
+            $tmp_name = $_FILES["plantImage"]["tmp_name"];
+            $fileName = basename($_FILES["plantImage"]["name"]);
+            move_uploaded_file($tmp_name, "../uploads/$fileName");
 
-    // if ($success) {
-    //     header("Location: ../pages/criar-jardim.php");
-    //     exit();
-    // } else {
-    //     header("Location: ../pages/erro1.php");
-    //     exit();
-    // }
+            $updateParams['plantImage'] = $fileName;
+        }
+
+        $success = Garden::update($id, $plantName, $plantType, $plantDescription, $_FILES['plantImage']);
+
+
+        if ($success) {
+            header("Location: ../pages/criar-jardim.php");
+            exit();
+        } else {
+            header("Location: ../pages/erro.php");
+            exit();
+        }
+    } else {
+
+        header("Location: ../pages/erro.php");
+        exit();
+    }
 } else {
-    header("Location: ../pages/erro2.php");
+    header("Location: ../pages/criar-jardim.php");
     exit();
 }
