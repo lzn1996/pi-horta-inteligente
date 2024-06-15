@@ -35,8 +35,8 @@ class Garden
             $stmt->bindParam(':id', $this->id);
             $stmt->bindParam(':plantName', $this->plantName);
             $stmt->bindParam(':plantType', $this->plantType);
-            $stmt->bindParam(':plantDescription', $this->plantDescription);
             $stmt->bindParam(':plantImage', $this->plantImage);
+
             $stmt->bindParam(':user_id', $userId);
 
             $stmt->execute();
