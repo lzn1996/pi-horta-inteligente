@@ -8,7 +8,7 @@ class SQLConnection
 
         foreach ($envFile as $line) {
             $parts = explode('=', $line, 2);
-            if (count($parts) == 2) { // Ensure that both key and value are present
+            if (count($parts) == 2) {
                 list($key, $value) = $parts;
                 $envVariables[trim($key)] = trim($value);
             }

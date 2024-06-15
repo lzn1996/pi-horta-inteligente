@@ -1,17 +1,22 @@
 <?php
 
 require '../model/Garden.php';
+// echo "<pre>";
+// var_dump($_POST);
+// var_dump($_FILES);
+// echo "</pre>";
+// die();
 session_start();
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['plantName']) && isset($_POST['plantType']) && isset($_POST['plantDescription']) && isset($_FILES['plantImage'])) {
+    if (isset($_POST['plantName']) && isset($_POST['plantType']) && isset($_POST['soilMoisture']) && isset($_POST['plantingDate']) && isset($_POST['harvestDate']) && isset($_POST['additionalNotes']) && isset($_FILES['plantImage'])) {
         $plantName = $_POST['plantName'];
         $plantType = $_POST['plantType'];
-        $soil_moisture = $_POST['soil_moisture'];
-        $planting_date = $_POST['planting_date'];
-        $harvest_date = $_POST['harvest_date'];
-        $additional_notes = $_POST['additional_notes'];
-
+        $soil_moisture = $_POST['soilMoisture']; // Corrigido para 'soilMoisture'
+        $planting_date = $_POST['plantingDate']; // Corrigido para 'plantingDate'
+        $harvest_date = $_POST['harvestDate'];   // Corrigido para 'harvestDate'
+        $additional_notes = $_POST['additionalNotes']; // Corrigido para 'additionalNotes'
 
         if ($_FILES['plantImage']['error'] === UPLOAD_ERR_OK) {
             $tmp_name = $_FILES["plantImage"]["tmp_name"];

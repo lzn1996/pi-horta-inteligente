@@ -111,33 +111,25 @@ if (isset($_GET['garden-created-error'])) {
                     <?php endif; ?>
                     <!-- Cards Container -->
                     <div class="row mt-4" id="cardsContainer">
-                        <?php
-                        foreach ($gardens as $garden) {
-                            $id = $garden['id'];
-                            $plantName = $garden['plant_name'];
-                            $plantType = $garden['plant_type'];
-                            $plantDescription = $garden['plant_description'];
-                            $plantImage = $garden['plant_image'];
-                        ?>
+                        <?php foreach ($gardens as $garden) : ?>
                             <div class="col-md-4">
                                 <div class="card position-relative">
-                                    <img src="../uploads/<?php echo $plantImage; ?>" class="card-img-top" alt="Imagem do Jardim">
+                                    <img src="../uploads/<?php echo $garden['plant_image']; ?>" class="card-img-top" alt="Imagem do Jardim">
                                     <div class="card-body">
-                                        <h5 class="card-title"><?php echo $plantName; ?></h5>
-                                        <p class="card-text"><?php echo $plantDescription; ?></p>
-                                        <div class="position-absolute" style='top: 5px; right: 5px'>
-                                            <a href="/pi-horta-inteligente/pages/edit-garden.php/?garden-id=<?= $id ?>" class="btn btn-warning"><i class="lni lni-pencil"></i></a>
-                                            <a href="/pi-horta-inteligente/pages/delete-garden.php/?garden-id=<?= $id ?>" class="btn btn-danger"><i class="lni lni-trash-can"></i></a>
+                                        <h5 class="card-title"><?php echo $garden['plant_name']; ?></h5>
+                                        <p class="card-text"><strong>Tipo:</strong> <?php echo $garden['plant_type']; ?></p>
+                                        <p class="card-text"><strong>Umidade do solo:</strong> <?php echo $garden['soil_moisture']; ?></p>
+                                        <p class="card-text"><strong>Data de plantio:</strong> <?php echo $garden['planting_date']; ?></p>
+                                        <p class="card-text"><strong>Data de colheita:</strong> <?php echo $garden['harvest_date']; ?></p>
+                                        <p class="card-text"><strong>Notas adicionais:</strong> <?php echo $garden['additional_notes']; ?></p>
+                                        <div class="position-absolute" style="top: 5px; right: 5px;">
+                                            <a href="/pi-horta-inteligente/pages/edit-garden.php/?garden-id=<?= $garden['id'] ?>" class="btn btn-warning"><i class="lni lni-pencil"></i></a>
+                                            <a href="/pi-horta-inteligente/pages/delete-garden.php/?garden-id=<?= $garden['id'] ?>" class="btn btn-danger"><i class="lni lni-trash-can"></i></a>
                                         </div>
-
-
                                     </div>
                                 </div>
                             </div>
-
-                        <?php
-                        }
-                        ?>
+                        <?php endforeach; ?>
                     </div>
                     <!-- Modal -->
                     <div class="modal fade" id="createGardenModal" tabindex="-1" aria-labelledby="createGardenModalLabel" aria-hidden="true">
@@ -158,7 +150,7 @@ if (isset($_GET['garden-created-error'])) {
                                             <div style="display: flex; gap: 1rem; align-items: center;">
                                                 <div>
                                                     <input type="radio" id="planta" name="plantType" value="Planta" required>
-                                                    <label for="planta" style="text-align: initial;">Jardim</label>
+                                                    <label for="planta" style="text-align: initial;">Planta</label>
                                                 </div>
                                                 <div>
                                                     <input type="radio" id="cultura" name="plantType" value="Cultura" required>

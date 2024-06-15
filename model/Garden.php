@@ -9,10 +9,10 @@ class Garden
     private $plantType;
     private $plantImage;
     private $id;
-    private $soil_moisture;
-    private $planting_date;
-    private $harvest_date;
-    private $additional_notes;
+    private $soilMoisture;
+    private $plantingDate;
+    private $harvestDate;
+    private $additionalNotes;
 
     public function __construct($plantName, $plantType, $plantImage, $soil_moisture, $planting_date, $harvest_date, $additional_notes)
     {
@@ -20,10 +20,10 @@ class Garden
         $this->plantName = $plantName;
         $this->plantType = $plantType;
         $this->plantImage = $plantImage;
-        $this->soil_moisture = $soil_moisture;
-        $this->planting_date = $planting_date;
-        $this->harvest_date = $harvest_date;
-        $this->additional_notes = $additional_notes;
+        $this->soilMoisture = $soil_moisture;
+        $this->plantingDate = $planting_date;
+        $this->harvestDate = $harvest_date ?? null;
+        $this->additionalNotes = $additional_notes;
     }
 
     public function create($userId)
@@ -31,11 +31,15 @@ class Garden
         try {
             $conexao = SQLConnection::connect();
 
-            $stmt = $conexao->prepare("INSERT INTO garden (id, plant_name, plant_type, plant_description, plant_image, user_id) VALUES (:id, :plantName, :plantType, :plantDescription, :plantImage, :user_id)");
+            $stmt = $conexao->prepare("INSERT INTO garden (id, plant_name, plant_type, plant_image, user_id, soil_moisture, planting_date, harvest_date, additional_notes) VALUES (:id, :plantName, :plantType, :plantImage, :user_id, :soil_moisture, :planting_date, :harvest_date, :additional_notes)");
             $stmt->bindParam(':id', $this->id);
             $stmt->bindParam(':plantName', $this->plantName);
             $stmt->bindParam(':plantType', $this->plantType);
             $stmt->bindParam(':plantImage', $this->plantImage);
+            $stmt->bindParam(':soil_moisture', $this->soilMoisture);
+            $stmt->bindParam(':planting_date', $this->plantingDate);
+            $stmt->bindParam(':harvest_date', $this->harvestDate);
+            $stmt->bindParam(':additional_notes', $this->additionalNotes);
 
             $stmt->bindParam(':user_id', $userId);
 
@@ -73,7 +77,6 @@ class Garden
     {
         try {
             $conexao = SQLConnection::connect();
-            print('entrou aq');
             $stmt = $conexao->prepare("DELETE FROM garden WHERE id = :id");
             $stmt->bindParam(':id', $id);
 
@@ -134,8 +137,7 @@ class Garden
             return false;
         }
     }
-
-    public static function update($id, $plantName = null, $plantType = null, $plantDescription = null, $newPlantImage = null)
+    public static function update($id, $plantName = null, $plantType = null, $soilMoisture = null, $plantingDate = null, $harvestDate = null, $additionalNotes = null, $newPlantImage = null)
     {
         try {
             $conexao = SQLConnection::connect();
@@ -151,13 +153,27 @@ class Garden
                 $sql .= "plant_type = :plantType, ";
                 $params[':plantType'] = $plantType;
             }
-            if ($plantDescription !== null) {
-                $sql .= "plant_description = :plantDescription, ";
-                $params[':plantDescription'] = $plantDescription;
+
+            if ($soilMoisture !== null) {
+                $sql .= "soil_moisture = :soilMoisture, ";
+                $params[':soilMoisture'] = $soilMoisture;
             }
-            if ($newPlantImage !== null) {
-                $tmp_name = $newPlantImage["tmp_name"];
-                $fileName = basename($newPlantImage["name"]);
+            if ($plantingDate !== null) {
+                $sql .= "planting_date = :plantingDate, ";
+                $params[':plantingDate'] = $plantingDate;
+            }
+            if ($harvestDate !== null) {
+                $sql .= "harvest_date = :harvestDate, ";
+                $params[':harvestDate'] = $harvestDate;
+            }
+            if ($additionalNotes !== null) {
+                $sql .= "additional_notes = :additionalNotes, ";
+                $params[':additionalNotes'] = $additionalNotes;
+            }
+
+            if ($newPlantImage !== null && $_FILES['plantImage']['error'] === UPLOAD_ERR_OK) {
+                $tmp_name = $_FILES["plantImage"]["tmp_name"];
+                $fileName = basename($_FILES["plantImage"]["name"]);
                 move_uploaded_file($tmp_name, "../uploads/$fileName");
 
                 $sql .= "plant_image = :plantImage, ";
