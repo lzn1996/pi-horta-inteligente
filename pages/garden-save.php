@@ -7,14 +7,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['plantName']) && isset($_POST['plantType']) && isset($_POST['plantDescription']) && isset($_FILES['plantImage'])) {
         $plantName = $_POST['plantName'];
         $plantType = $_POST['plantType'];
-        $plantDescription = $_POST['plantDescription'];
+        $soil_moisture = $_POST['soil_moisture'];
+
+
 
         if ($_FILES['plantImage']['error'] === UPLOAD_ERR_OK) {
             $tmp_name = $_FILES["plantImage"]["tmp_name"];
             $fileName = basename($_FILES["plantImage"]["name"]);
             move_uploaded_file($tmp_name, "../uploads/$fileName");
 
-            $garden = new Garden($plantName, $plantType, $plantDescription, $fileName);
+            $garden = new Garden($plantName, $plantType, $fileName,);
             $userId = $_SESSION['user_id']['id'];
             $success = $garden->create($userId);
 

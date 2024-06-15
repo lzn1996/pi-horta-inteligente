@@ -7,17 +7,23 @@ class Garden
 {
     private $plantName;
     private $plantType;
-    private $plantDescription;
     private $plantImage;
     private $id;
+    private $soil_moisture;
+    private $planting_date;
+    private $harvest_date;
+    private $additional_notes;
 
-    public function __construct($plantName, $plantType, $plantDescription, $plantImage)
+    public function __construct($plantName, $plantType, $plantImage, $soil_moisture, $planting_date, $harvest_date, $additional_notes)
     {
         $this->id = uniqid();
         $this->plantName = $plantName;
         $this->plantType = $plantType;
-        $this->plantDescription = $plantDescription;
         $this->plantImage = $plantImage;
+        $this->soil_moisture = $soil_moisture;
+        $this->planting_date = $planting_date;
+        $this->harvest_date = $harvest_date;
+        $this->additional_notes = $additional_notes;
     }
 
     public function create($userId)
