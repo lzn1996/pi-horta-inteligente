@@ -154,7 +154,7 @@ if (isset($_GET['garden-created-error'])) {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
         <script src="../js/sidebar.js"></script>
 
-        <script>
+        <!-- <script>
             function createHumidityChart(ctx) {
                 const initialData = [70, 30]; // Initial data values
 
@@ -221,6 +221,91 @@ if (isset($_GET['garden-created-error'])) {
                     humidityChart.data.datasets[0].data = newData;
                     humidityChart.update();
                 }, 5000);
+            });
+        </script> -->
+
+        <script>
+            async function fetchHumidityData() {
+                try {
+                    const response = await fetch('http://localhost:8000/humidity');
+                    const data = await response.json();
+                    console.log('Dados recebidos da API:', data);
+                    return data[0];
+                } catch (error) {
+                    console.error('Erro ao buscar dados da API:', error);
+                }
+            }
+
+            async function updateChart(chart) {
+                const humidityData = await fetchHumidityData();
+                if (!humidityData || humidityData.humidity === undefined || humidityData.remaining === undefined) {
+                    console.error("Dados inválidos recebidos da API:", humidityData);
+                    return;
+                }
+                console.log('Atualizando gráfico com dados:', humidityData);
+                chart.data.datasets[0].data = [humidityData.humidity, humidityData.remaining];
+                chart.update();
+            }
+
+            function createHumidityChart(ctx) {
+                return new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Umidade', 'Restante'],
+                        datasets: [{
+                            label: 'Umidade do Solo',
+                            data: [0, 0],
+                            backgroundColor: ["#4caf50", "#d32f2f"],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '80%',
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: false
+                            }
+                        }
+                    },
+                    plugins: [{
+                        id: 'percentagePlugin',
+                        afterDraw: (chart) => {
+                            const {
+                                ctx,
+                                chartArea: {
+                                    width,
+                                    height
+                                }
+                            } = chart;
+                            ctx.save();
+                            const total = chart.data.datasets[0].data.reduce((acc, value) => acc + value, 0);
+                            const percentageValue = (chart.data.datasets[0].data[0] / total * 100).toFixed(1);
+                            const percentageText = isNaN(percentageValue) ? '0%' : `${percentageValue}%`;
+
+                            ctx.font = 'bold 18px Arial';
+                            ctx.fillStyle = percentageValue < 50 ? '#d32f2f' : '#4caf50';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillText(percentageText, width / 2, height / 2);
+                            ctx.restore();
+                        }
+                    }]
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelectorAll('.humidityChart').forEach((canvas) => {
+                    const ctx = canvas.getContext('2d');
+                    const humidityChart = createHumidityChart(ctx);
+
+                    setInterval(() => {
+                        updateChart(humidityChart);
+                    }, 5000);
+                });
             });
         </script>
 
