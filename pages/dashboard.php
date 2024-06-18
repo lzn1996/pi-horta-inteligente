@@ -102,7 +102,7 @@ if (isset($_GET['garden-created-error'])) {
 
                     <div class="container">
                         <div class="row">
-                            <?php foreach ($gardens as $garden) : ?>
+                            <?php foreach ($gardens as $index => $garden) : ?>
                                 <div class="col-md-3 mb-3">
                                     <div class="card">
                                         <div class="card-img-container">
@@ -116,16 +116,13 @@ if (isset($_GET['garden-created-error'])) {
                                             <p class="card-text">Data de colheita: <?php echo $garden['harvest_date']; ?></p>
                                             <p class="card-text">Notas adicionais: <?php echo $garden['additional_notes']; ?></p>
                                             <div class="humidity-chart-container">
-                                                <canvas class="humidityChart" width="100"></canvas>
+                                                <canvas class="humidityChart" id="humidityChart<?php echo $index; ?>" data-plant-id="plant<?php echo $index + 1; ?>" width="100"></canvas>
                                             </div>
-                                            <!-- <div class="position-absolute" style="top: 5px; right: 5px;">
-                                                <a href="/pi-horta-inteligente/pages/edit-garden.php/?garden-id=<?= $garden['id'] ?>" class="btn btn-warning"><i class="lni lni-pencil"></i></a>
-                                                <a href="/pi-horta-inteligente/pages/delete-garden.php/?garden-id=<?= $garden['id'] ?>" class="btn btn-danger"><i class="lni lni-trash-can"></i></a>
-                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
+
 
                             <!-- Repita o bloco de colunas (col-md-3 mb-3) para adicionar mais cards -->
 
@@ -224,7 +221,7 @@ if (isset($_GET['garden-created-error'])) {
             });
         </script> -->
 
-        <script>
+        <!-- <script>
             async function fetchHumidityData() {
                 try {
                     const response = await fetch('http://localhost:8000/humidity');
@@ -307,7 +304,95 @@ if (isset($_GET['garden-created-error'])) {
                     }, 5000);
                 });
             });
+        </script> -->
+
+        <script>
+            async function fetchHumidityData(plantId) {
+                try {
+                    const response = await fetch(`http://localhost:8000/humidity/${plantId}`);
+                    const data = await response.json();
+                    console.log(`Dados recebidos da API para ${plantId}:`, data);
+                    return data[0];
+                } catch (error) {
+                    console.error('Erro ao buscar dados da API:', error);
+                }
+            }
+
+            async function updateChart(chart, plantId) {
+                const humidityData = await fetchHumidityData(plantId);
+                if (!humidityData || humidityData.humidity === undefined || humidityData.remaining === undefined) {
+                    console.error("Dados inválidos recebidos da API:", humidityData);
+                    return;
+                }
+                console.log('Atualizando gráfico com dados:', humidityData);
+                chart.data.datasets[0].data = [humidityData.humidity, humidityData.remaining];
+                chart.update();
+            }
+
+            function createHumidityChart(ctx) {
+                return new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Umidade', 'Restante'],
+                        datasets: [{
+                            label: 'Umidade do Solo',
+                            data: [0, 0],
+                            backgroundColor: ["#4caf50", "#d32f2f"],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '80%',
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: false
+                            }
+                        }
+                    },
+                    plugins: [{
+                        id: 'percentagePlugin',
+                        afterDraw: (chart) => {
+                            const {
+                                ctx,
+                                chartArea: {
+                                    width,
+                                    height
+                                }
+                            } = chart;
+                            ctx.save();
+                            const total = chart.data.datasets[0].data.reduce((acc, value) => acc + value, 0);
+                            const percentageValue = (chart.data.datasets[0].data[0] / total * 100).toFixed(1);
+                            const percentageText = isNaN(percentageValue) ? '0%' : `${percentageValue}%`;
+
+                            ctx.font = 'bold 18px Arial';
+                            ctx.fillStyle = percentageValue < 50 ? '#d32f2f' : '#4caf50';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillText(percentageText, width / 2, height / 2);
+                            ctx.restore();
+                        }
+                    }]
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelectorAll('.humidityChart').forEach((canvas, index) => {
+                    const ctx = canvas.getContext('2d');
+                    const plantId = canvas.getAttribute('data-plant-id');
+                    const humidityChart = createHumidityChart(ctx);
+
+                    setInterval(() => {
+                        updateChart(humidityChart, plantId);
+                    }, 5000);
+                });
+            });
         </script>
+
+
 
 
         <script>
