@@ -78,15 +78,17 @@ if (isset($_GET['garden-created-error'])) {
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
-                            <i class="lni lni-cog"></i>
-                            <span>Configurações</span>
-                        </a>
-                    </li>
+                    <!--
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link">
+                        <i class="lni lni-cog"></i>
+                        <span>Configurações</span>
+                    </a>
+                </li>
+                -->
                 </ul>
                 <div class="sidebar-footer">
-                    <a href="#" class="sidebar-link">
+                    <a href="/pi-horta-inteligente/pages/logout.php" class="sidebar-link">
                         <i class="lni lni-exit"></i>
                         <span>Logout</span>
                     </a>

@@ -27,7 +27,7 @@ if (isset($_GET['user-invalid']) && $_GET['user-invalid'] === 'true') {
 </head>
 
 <body>
-    <div class="form-container">
+    <div class="form-container" style='min-width: 300px' ;>
         <h2 class="text-center mb-4">Login</h2>
         <?php if (!empty($failedInAuthenticationErrorMessage)) : ?>
             <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
@@ -40,11 +40,11 @@ if (isset($_GET['user-invalid']) && $_GET['user-invalid'] === 'true') {
         <form id="loginForm" method="post" action='./pages/check-user.php'>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
+                <input type="email" class="form-control" id="email" placeholder="Seu e-mail" name="email" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
+                <input type="password" class="form-control" id="password" placeholder="Sua senha" name="password" required>
             </div>
             <button type="submit" class="btn btn-primary w-100">Login</button>
             <div class="mt-3 d-flex justify-content-between">
@@ -70,7 +70,7 @@ if (isset($_GET['user-invalid']) && $_GET['user-invalid'] === 'true') {
                         </div>
                         <div class="mb-3">
                             <label for="newEmail" class="form-label">E-mail</label>
-                            <input type="email" class="form-control" id="newEmail" placeholder="Digite seu email" name="email">
+                            <input type="email" class="form-control" id="newEmail" placeholder="Digite seu e-mail" name="email">
                         </div>
                         <div class="mb-3">
                             <label for="newPassword" class="form-label">Senha</label>
@@ -79,7 +79,7 @@ if (isset($_GET['user-invalid']) && $_GET['user-invalid'] === 'true') {
                         </div>
                         <div class="mb-3">
                             <label for="confirmNewPassword" class="form-label">Confirmar senha</label>
-                            <input type="password" class="form-control" id="confirmNewPassword" placeholder="Confira sua senha">
+                            <input type="password" class="form-control" id="confirmNewPassword" placeholder="Confirme a sua senha">
                             <p id="confirmMessage" style='color: red;'></p>
                         </div>
                         <button type="submit" id="createAccBtn" class="btn btn-light w-100" disabled>Criar conta</button>

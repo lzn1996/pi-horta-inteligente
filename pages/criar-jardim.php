@@ -28,9 +28,17 @@ if (isset($_GET['garden-created-error'])) {
     <title>Sidebar With Bootstrap</title>
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <!-- <link rel="stylesheet" href="../css/sidebar.css"> -->
     <link rel="stylesheet" href="../css/dashboard.css">
+    <style>
+        <?php if ($gardensQuantity < 2) : ?>#cardsContainer {
+            justify-content: center;
+        }
+
+        <?php endif; ?>
+    </style>
 </head>
 
 <body>
@@ -57,16 +65,9 @@ if (isset($_GET['garden-created-error'])) {
                         <span>Meus Jardins</span></a>
                     </a>
                 </li>
-
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
-                        <i class="lni lni-cog"></i>
-                        <span>Configurações</span>
-                    </a>
-                </li>
             </ul>
             <div class="sidebar-footer">
-                <a href="#" class="sidebar-link">
+                <a href="/pi-horta-inteligente/pages/logout.php" class="sidebar-link">
                     <i class="lni lni-exit"></i>
                     <span>Logout</span>
                 </a>
@@ -74,7 +75,6 @@ if (isset($_GET['garden-created-error'])) {
         </aside>
         <div class="main p-3">
             <div>
-
                 <div class="container mt-5">
                     <!-- Navigation Bar -->
                     <nav class="navbar navbar-expand-lg navbar-light bg-light p-3 rounded">
@@ -96,32 +96,35 @@ if (isset($_GET['garden-created-error'])) {
                             </div>
                         </div>
                     </nav>
+
+                    <!-- Alerts -->
                     <?php if (!empty($gardenCreatedErrorMsg)) : ?>
                         <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
                             <?php echo $gardenCreatedErrorMsg; ?>
-                            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Fechar"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
                         </div>
                     <?php endif; ?>
 
                     <?php if (!empty($gardenCreatedSuccessMsg)) : ?>
                         <div class="alert alert-success alert-dismissible fade show mt-4" role="alert">
                             <?php echo $gardenCreatedSuccessMsg; ?>
-                            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Fechar"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
                         </div>
                     <?php endif; ?>
+
                     <!-- Cards Container -->
-                    <div class="row mt-4" id="cardsContainer">
+                    <div class="row mt-4" id="cardsContainer" style='display: flex; gap:20px;'>
                         <?php foreach ($gardens as $garden) : ?>
-                            <div class="col-md-4">
+                            <div class="col-md-4" style='flex: 1; flex-basis: 300px; max-width: 600px'>
                                 <div class="card position-relative">
                                     <img src="../uploads/<?php echo $garden['plant_image']; ?>" class="card-img-top" alt="Imagem do Jardim">
                                     <div class="card-body">
-                                        <h5 class="card-title"><?php echo $garden['plant_name']; ?></h5>
-                                        <p class="card-text"><strong>Tipo:</strong> <?php echo $garden['plant_type']; ?></p>
-                                        <p class="card-text"><strong>Umidade do solo:</strong> <?php echo $garden['soil_moisture']; ?></p>
-                                        <p class="card-text"><strong>Data de plantio:</strong> <?php echo $garden['planting_date']; ?></p>
-                                        <p class="card-text"><strong>Data de colheita:</strong> <?php echo $garden['harvest_date']; ?></p>
-                                        <p class="card-text"><strong>Notas adicionais:</strong> <?php echo $garden['additional_notes']; ?></p>
+                                        <h5 class="card-title" style="font-size: 1.25rem;"><?php echo $garden['plant_name']; ?></h5>
+                                        <p class="card-text" style="font-size: 0.9rem;">Tipo: <strong><?php echo $garden['plant_type']; ?></strong></p>
+                                        <p class="card-text" style="font-size: 0.9rem;">Umidade do solo: <strong><?php echo $garden['soil_moisture']; ?></strong></p>
+                                        <p class="card-text" style="font-size: 0.9rem;">Data de plantio: <strong><?php echo $garden['planting_date']; ?></strong></p>
+                                        <p class="card-text" style="font-size: 0.9rem;">Data de colheita: <strong><?php echo $garden['harvest_date']; ?></strong></p>
+                                        <p class="card-text" style="font-size: 0.9rem;">Notas adicionais: <strong><?php echo $garden['additional_notes']; ?></strong></p>
                                         <div class="position-absolute" style="top: 5px; right: 5px;">
                                             <a href="/pi-horta-inteligente/pages/edit-garden.php/?garden-id=<?= $garden['id'] ?>" class="btn btn-warning"><i class="lni lni-pencil"></i></a>
                                             <a href="/pi-horta-inteligente/pages/delete-garden.php/?garden-id=<?= $garden['id'] ?>" class="btn btn-danger"><i class="lni lni-trash-can"></i></a>
@@ -131,6 +134,7 @@ if (isset($_GET['garden-created-error'])) {
                             </div>
                         <?php endforeach; ?>
                     </div>
+
                     <!-- Modal -->
                     <div class="modal fade" id="createGardenModal" tabindex="-1" aria-labelledby="createGardenModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -192,10 +196,7 @@ if (isset($_GET['garden-created-error'])) {
             </div>
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
         <script src="../js/sidebar.js"></script>
-
 </body>
 
 </html>
