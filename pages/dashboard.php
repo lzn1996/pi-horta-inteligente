@@ -53,32 +53,32 @@ if (isset($_GET['garden-created-error'])) {
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="wrapper">
-            <aside id="sidebar" class="expand">
-                <div class="d-flex">
-                    <button class="toggle-btn" type="button">
-                        <img class=foia src="../img/foia.png" alt="">
-                    </button>
-                    <div class="sidebar-logo">
-                        <a href="#">SmartGarden</a>
-                    </div>
-                </div>
-                <ul class="sidebar-nav">
-                    <li class="sidebar-item">
-                        <a href="dashboard.php" class="sidebar-link">
-                            <i class="lni lni-layout"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="criar-jardim.php" class="sidebar-link">
-                            <i class="lni lni-sprout"></i>
-                            <span>Meus Jardins</span></a>
-                        </a>
-                    </li>
 
-                    <!--
+    <div class="wrapper">
+        <aside id="sidebar" class="expand">
+            <div class="d-flex">
+                <button class="toggle-btn" type="button">
+                    <img class=foia src="../img/foia.png" alt="">
+                </button>
+                <div class="sidebar-logo">
+                    <a href="#">SmartGarden</a>
+                </div>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="dashboard.php" class="sidebar-link">
+                        <i class="lni lni-layout"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="criar-jardim.php" class="sidebar-link">
+                        <i class="lni lni-sprout"></i>
+                        <span>Meus Jardins</span></a>
+                    </a>
+                </li>
+
+                <!--
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link">
                         <i class="lni lni-cog"></i>
@@ -86,342 +86,219 @@ if (isset($_GET['garden-created-error'])) {
                     </a>
                 </li>
                 -->
-                </ul>
-                <div class="sidebar-footer">
-                    <a href="/pi-horta-inteligente/pages/logout.php" class="sidebar-link">
-                        <i class="lni lni-exit"></i>
-                        <span>Logout</span>
-                    </a>
-                </div>
-            </aside>
-            <div class="main p-3">
-                <div class="text-center">
+            </ul>
+            <div class="sidebar-footer">
+                <a href="/pi-horta-inteligente/pages/logout.php" class="sidebar-link">
+                    <i class="lni lni-exit"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+        <div class="main p-3 text-center">
+            <div>
 
-                    <nav class="navbar navbar-expand-lg navbar-light bg-light p-3 rounded">
-                        <h1>Dashboard</h1>
-                    </nav>
+                <nav class="navbar navbar-expand-lg bg-white p-3 rounded-lg mb-3">
+                    <h1 class="centrinho">Dashboard</h1>
+                    <div id="weather" class="ms-auto d-flex align-items-center">
+                        <img id="weather-icon" src="" alt="Weather Icon" class="me-2">
+                        <span id="weather-description"></span>
+                    </div>
+                </nav>
 
 
-                    <div class="container">
-                        <div class="row">
-                            <?php foreach ($gardens as $index => $garden) : ?>
-                                <div class="col-md-3 mb-3">
+                <div class="container">
+                    <div class="row">
+                        <?php foreach ($gardens as $index => $garden) : ?>
+                            <div class="col-md-3 mb-3">
+                                <div class="card">
+                                    <div class="card-img-container">
+                                        <img src="../uploads/<?php echo $garden['plant_image']; ?>" class="card-img-top" alt="Imagem da Planta">
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-3"><?php echo $garden['plant_name']; ?></h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">Tipo: <?php echo $garden['plant_type']; ?></h6>
+                                        <p class="card-text">Umidade do solo: <?php echo $garden['soil_moisture']; ?>%</p>
+                                        <p class="card-text">Data de plantio: <br><?php echo $garden['planting_date']; ?></p>
+                                        <p class="card-text">Data de colheita: <br><?php echo $garden['harvest_date']; ?></p>
+                                        <p class="card-text">Notas adicionais: <?php echo $garden['additional_notes']; ?></p>
+                                        <div class="humidity-chart-container">
+                                            <canvas class="humidityChart" id="humidityChart<?php echo $index; ?>" data-plant-id="plant<?php echo $index + 1; ?>" width="100"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+
+
+                        <!-- Repita o bloco de colunas (col-md-3 mb-3) para adicionar mais cards -->
+
+
+                        <div class="container">
+                            <div class="row">
+                                <!-- Gráfico de Economia de Água -->
+                                <div class="col-md-12 mb-3">
                                     <div class="card">
-                                        <div class="card-img-container">
-                                            <img src="../uploads/<?php echo $garden['plant_image']; ?>" class="card-img-top" alt="Imagem da Planta">
-                                        </div>
                                         <div class="card-body">
-                                            <h5 class="card-title"><?php echo $garden['plant_name']; ?></h5>
-                                            <h6 class="card-subtitle mb-2 text-muted">Tipo: <?php echo $garden['plant_type']; ?></h6>
-                                            <p class="card-text">Umidade do solo: <?php echo $garden['soil_moisture']; ?></p>
-                                            <p class="card-text">Data de plantio: <?php echo $garden['planting_date']; ?></p>
-                                            <p class="card-text">Data de colheita: <?php echo $garden['harvest_date']; ?></p>
-                                            <p class="card-text">Notas adicionais: <?php echo $garden['additional_notes']; ?></p>
-                                            <div class="humidity-chart-container">
-                                                <canvas class="humidityChart" id="humidityChart<?php echo $index; ?>" data-plant-id="plant<?php echo $index + 1; ?>" width="100"></canvas>
-                                            </div>
+                                            <h5 class="card-title">Economia de Água durante o Ano</h5>
+                                            <canvas id="waterSavingsChart" width="400"></canvas>
                                         </div>
                                     </div>
                                 </div>
-                            <?php endforeach; ?>
 
-
-                            <!-- Repita o bloco de colunas (col-md-3 mb-3) para adicionar mais cards -->
-
-
-                            <div class="container">
-                                <div class="row">
-                                    <!-- Gráfico de Economia de Água -->
-                                    <div class="col-md-6 mb-3">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Economia de Água durante o Ano</h5>
-                                                <canvas id="waterSavingsChart" width="400"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
+
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-        <script src="../js/sidebar.js"></script>
+    </div>
 
-        <!-- <script>
-            function createHumidityChart(ctx) {
-                const initialData = [70, 30]; // Initial data values
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script src="../js/sidebar.js"></script>
 
-                return new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Umidade', 'Restante'],
-                        datasets: [{
-                            label: 'Umidade do Solo',
-                            data: initialData,
-                            backgroundColor: ["#4caf50", "#d32f2f"], // Initial colors
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '80%',
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                enabled: false
-                            }
-                        }
-                    },
-                    plugins: [{
-                        id: 'percentagePlugin',
-                        afterDraw: (chart) => {
-                            const {
-                                ctx,
-                                chartArea: {
-                                    width,
-                                    height
-                                }
-                            } = chart;
-                            ctx.save();
-                            const total = chart.data.datasets[0].data.reduce((acc, value) => acc + value, 0);
-                            const percentageValue = (chart.data.datasets[0].data[0] / total * 100).toFixed(1);
-                            const percentageText = percentageValue + '%';
+    <script>
+        async function fetchWeather() {
+            const apiKey = 'c1463bf525fc62e190a035afadd8f9e8';
+            const city = 'Itapira,BR';
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pt_br`;
 
-                            ctx.font = 'bold 18px Arial';
-                            ctx.fillStyle = percentageValue < 50 ? '#d32f2f' : '#4caf50'; // Change color based on value
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'middle';
-                            ctx.fillText(percentageText, width / 2, height / 2);
-                            ctx.restore();
-                        }
-                    }]
-                });
-            }
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.cod === 200) {
+                    const icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+                    const description = `${data.weather[0].description}, ${data.main.temp}°C`;
 
-            function getRandomHumidity() {
-                const humidity = Math.floor(Math.random() * 101); // Random value between 0 and 100
-                return [humidity, 100 - humidity];
-            }
-
-            document.querySelectorAll('.humidityChart').forEach((canvas, index) => {
-                const ctx = canvas.getContext('2d');
-                const humidityChart = createHumidityChart(ctx);
-
-                setInterval(() => {
-                    const newData = getRandomHumidity();
-                    humidityChart.data.datasets[0].data = newData;
-                    humidityChart.update();
-                }, 5000);
-            });
-        </script> -->
-
-        <!-- <script>
-            async function fetchHumidityData() {
-                try {
-                    const response = await fetch('http://localhost:8000/humidity');
-                    const data = await response.json();
-                    console.log('Dados recebidos da API:', data);
-                    return data[0];
-                } catch (error) {
-                    console.error('Erro ao buscar dados da API:', error);
+                    document.getElementById('weather-icon').src = icon;
+                    document.getElementById('weather-description').textContent = description;
+                } else {
+                    console.error('Erro ao buscar dados do tempo:', data.message);
                 }
+            } catch (error) {
+                console.error('Erro ao buscar dados do tempo:', error);
             }
+        }
 
-            async function updateChart(chart) {
-                const humidityData = await fetchHumidityData();
-                if (!humidityData || humidityData.humidity === undefined || humidityData.remaining === undefined) {
-                    console.error("Dados inválidos recebidos da API:", humidityData);
-                    return;
-                }
-                console.log('Atualizando gráfico com dados:', humidityData);
-                chart.data.datasets[0].data = [humidityData.humidity, humidityData.remaining];
-                chart.update();
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchWeather();
+        });
+    </script>
+
+
+    <script>
+        async function fetchHumidityData(plantId) {
+            try {
+                const response = await fetch(`http://localhost:8000/humidity/${plantId}`);
+                const data = await response.json();
+                console.log(`Dados recebidos da API para ${plantId}:`, data);
+                return data[0];
+            } catch (error) {
+                console.error('Erro ao buscar dados da API:', error);
             }
+        }
 
-            function createHumidityChart(ctx) {
-                return new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Umidade', 'Restante'],
-                        datasets: [{
-                            label: 'Umidade do Solo',
-                            data: [0, 0],
-                            backgroundColor: ["#4caf50", "#d32f2f"],
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '80%',
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                enabled: false
-                            }
-                        }
-                    },
-                    plugins: [{
-                        id: 'percentagePlugin',
-                        afterDraw: (chart) => {
-                            const {
-                                ctx,
-                                chartArea: {
-                                    width,
-                                    height
-                                }
-                            } = chart;
-                            ctx.save();
-                            const total = chart.data.datasets[0].data.reduce((acc, value) => acc + value, 0);
-                            const percentageValue = (chart.data.datasets[0].data[0] / total * 100).toFixed(1);
-                            const percentageText = isNaN(percentageValue) ? '0%' : `${percentageValue}%`;
-
-                            ctx.font = 'bold 18px Arial';
-                            ctx.fillStyle = percentageValue < 50 ? '#d32f2f' : '#4caf50';
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'middle';
-                            ctx.fillText(percentageText, width / 2, height / 2);
-                            ctx.restore();
-                        }
-                    }]
-                });
+        async function updateChart(chart, plantId) {
+            const humidityData = await fetchHumidityData(plantId);
+            if (!humidityData || humidityData.humidity === undefined || humidityData.remaining === undefined) {
+                console.error("Dados inválidos recebidos da API:", humidityData);
+                return;
             }
+            console.log('Atualizando gráfico com dados:', humidityData);
+            chart.data.datasets[0].data = [humidityData.humidity, humidityData.remaining];
+            chart.update();
+        }
 
-            document.addEventListener('DOMContentLoaded', () => {
-                document.querySelectorAll('.humidityChart').forEach((canvas) => {
-                    const ctx = canvas.getContext('2d');
-                    const humidityChart = createHumidityChart(ctx);
-
-                    setInterval(() => {
-                        updateChart(humidityChart);
-                    }, 5000);
-                });
-            });
-        </script> -->
-
-        <script>
-            async function fetchHumidityData(plantId) {
-                try {
-                    const response = await fetch(`http://localhost:8000/humidity/${plantId}`);
-                    const data = await response.json();
-                    console.log(`Dados recebidos da API para ${plantId}:`, data);
-                    return data[0];
-                } catch (error) {
-                    console.error('Erro ao buscar dados da API:', error);
-                }
-            }
-
-            async function updateChart(chart, plantId) {
-                const humidityData = await fetchHumidityData(plantId);
-                if (!humidityData || humidityData.humidity === undefined || humidityData.remaining === undefined) {
-                    console.error("Dados inválidos recebidos da API:", humidityData);
-                    return;
-                }
-                console.log('Atualizando gráfico com dados:', humidityData);
-                chart.data.datasets[0].data = [humidityData.humidity, humidityData.remaining];
-                chart.update();
-            }
-
-            function createHumidityChart(ctx) {
-                return new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Umidade', 'Restante'],
-                        datasets: [{
-                            label: 'Umidade do Solo',
-                            data: [0, 0],
-                            backgroundColor: ["#4caf50", "#d32f2f"],
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '80%',
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                enabled: false
-                            }
-                        }
-                    },
-                    plugins: [{
-                        id: 'percentagePlugin',
-                        afterDraw: (chart) => {
-                            const {
-                                ctx,
-                                chartArea: {
-                                    width,
-                                    height
-                                }
-                            } = chart;
-                            ctx.save();
-                            const total = chart.data.datasets[0].data.reduce((acc, value) => acc + value, 0);
-                            const percentageValue = (chart.data.datasets[0].data[0] / total * 100).toFixed(1);
-                            const percentageText = isNaN(percentageValue) ? '0%' : `${percentageValue}%`;
-
-                            ctx.font = 'bold 18px Arial';
-                            ctx.fillStyle = percentageValue < 50 ? '#d32f2f' : '#4caf50';
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'middle';
-                            ctx.fillText(percentageText, width / 2, height / 2);
-                            ctx.restore();
-                        }
-                    }]
-                });
-            }
-
-            document.addEventListener('DOMContentLoaded', () => {
-                document.querySelectorAll('.humidityChart').forEach((canvas, index) => {
-                    const ctx = canvas.getContext('2d');
-                    const plantId = canvas.getAttribute('data-plant-id');
-                    const humidityChart = createHumidityChart(ctx);
-
-                    setInterval(() => {
-                        updateChart(humidityChart, plantId);
-                    }, 5000);
-                });
-            });
-        </script>
-
-
-
-
-        <script>
-            const waterSavingsCtx = document.getElementById('waterSavingsChart').getContext('2d');
-
-            const waterSavingsChart = new Chart(waterSavingsCtx, {
-                type: 'line',
+        function createHumidityChart(ctx) {
+            return new Chart(ctx, {
+                type: 'doughnut',
                 data: {
-                    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                    labels: ['Umidade', 'Restante'],
                     datasets: [{
-                        label: 'Economia de Água (litros)',
-                        data: [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160],
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
+                        label: 'Umidade do Solo',
+                        data: [0, 0],
+                        backgroundColor: ["#4caf50", "#d32f2f"],
                     }]
                 },
                 options: {
                     responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
+                    maintainAspectRatio: false,
+                    cutout: '80%',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false
                         }
                     }
-                }
+                },
+                plugins: [{
+                    id: 'percentagePlugin',
+                    afterDraw: (chart) => {
+                        const {
+                            ctx,
+                            chartArea: {
+                                width,
+                                height
+                            }
+                        } = chart;
+                        ctx.save();
+                        const total = chart.data.datasets[0].data.reduce((acc, value) => acc + value, 0);
+                        const percentageValue = (chart.data.datasets[0].data[0] / total * 100).toFixed(1);
+                        const percentageText = isNaN(percentageValue) ? '0%' : `${percentageValue}%`;
+
+                        ctx.font = 'bold 18px Arial';
+                        ctx.fillStyle = percentageValue < 50 ? '#d32f2f' : '#4caf50';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(percentageText, width / 2, height / 2);
+                        ctx.restore();
+                    }
+                }]
             });
-        </script>
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.humidityChart').forEach((canvas, index) => {
+                const ctx = canvas.getContext('2d');
+                const plantId = canvas.getAttribute('data-plant-id');
+                const humidityChart = createHumidityChart(ctx);
+
+                setInterval(() => {
+                    updateChart(humidityChart, plantId);
+                }, 5000);
+            });
+        });
+    </script>
+
+
+    <script>
+        const waterSavingsCtx = document.getElementById('waterSavingsChart').getContext('2d');
+
+        const waterSavingsChart = new Chart(waterSavingsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                datasets: [{
+                    label: 'Economia de Água (litros)',
+                    data: [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160],
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 
 </body>
 
