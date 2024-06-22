@@ -113,7 +113,6 @@ if (isset($_GET['garden-created-success']) && $_GET['garden-created-success'] ==
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
                         </div>
                     <?php endif; ?>
-
                     <!-- Cards Container -->
                     <div class="row mt-4 d-flex justify-content-center" style='display: flex; gap:20px;'>
                         <?php foreach ($gardens as $garden) : ?>

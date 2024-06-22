@@ -26,8 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $garden = new Garden($plantName, $plantType, $fileName, $soil_moisture, $planting_date, $harvest_date, $additional_notes);
             $userId = $_SESSION['user_id']['id'];
             $success = $garden->create($userId);
-            var_dump($success);
-            die();
+
 
             if ($success) {
                 $queryString = http_build_query(['garden-created-success' => 'true']);
