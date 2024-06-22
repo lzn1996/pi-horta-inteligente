@@ -124,7 +124,7 @@ if (isset($_GET['garden-created-success']) && $_GET['garden-created-success'] ==
                                     <div class="card-body">
                                         <h5 class="card-title text-center" style="font-size: 1.25rem;"><?php echo $garden['plant_name']; ?></h5>
                                         <p class="card-text text-center" style="font-size: 0.9rem;">Tipo: <strong><?php echo $garden['plant_type']; ?></strong></p>
-                                        <p class="card-text text-center" style="font-size: 0.9rem;">Umidade do solo: <strong><?php echo $garden['soil_moisture']; ?>%</strong></p>
+                                        <p class="card-text text-center" style="font-size: 0.9rem;">Umidade de referência: <strong><?php echo $garden['soil_moisture']; ?>%</strong></p>
                                         <p class="card-text text-center" style="font-size: 0.9rem;">Data de plantio: <strong><?php echo date('d/m/Y', strtotime($garden['planting_date'])); ?></strong></p>
                                         <p class="card-text text-center" style="font-size: 0.9rem;">Data de colheita: <strong><?php echo $garden['harvest_date'] != '0000-00-00' ? date('d/m/Y', strtotime($garden['harvest_date'])) : "Nenhuma data definida"; ?></strong></p>
                                         <p class="card-text text-center" style="font-size: 0.9rem;">Notas adicionais: <strong><?php echo $garden['additional_notes']; ?></strong></p>
@@ -184,7 +184,7 @@ if (isset($_GET['garden-created-success']) && $_GET['garden-created-success'] ==
                                             </div>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="soilMoisture" class="form-label" style="text-align: initial;">Umidade do solo desejada:</label>
+                                            <label for="soilMoisture" class="form-label" style="text-align: initial;">Nivel de umidade de referência:</label>
                                             <input type="number" class="form-control" id="soilMoisture" name="soilMoisture" min="0" max="100" required>
                                         </div>
 
