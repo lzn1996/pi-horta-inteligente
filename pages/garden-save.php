@@ -13,10 +13,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['plantName']) && isset($_POST['plantType']) && isset($_POST['soilMoisture']) && isset($_POST['plantingDate']) && isset($_POST['harvestDate']) && isset($_POST['additionalNotes']) && isset($_FILES['plantImage'])) {
         $plantName = $_POST['plantName'];
         $plantType = $_POST['plantType'];
-        $soil_moisture = $_POST['soilMoisture']; // Corrigido para 'soilMoisture'
-        $planting_date = $_POST['plantingDate']; // Corrigido para 'plantingDate'
-        $harvest_date = $_POST['harvestDate'];   // Corrigido para 'harvestDate'
-        $additional_notes = $_POST['additionalNotes']; // Corrigido para 'additionalNotes'
+        $soil_moisture = $_POST['soilMoisture'];
+        $planting_date = $_POST['plantingDate'];
+        $harvest_date = $_POST['harvestDate'];
+        $additional_notes = $_POST['additionalNotes'];
 
         if ($_FILES['plantImage']['error'] === UPLOAD_ERR_OK) {
             $tmp_name = $_FILES["plantImage"]["tmp_name"];
@@ -26,6 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $garden = new Garden($plantName, $plantType, $fileName, $soil_moisture, $planting_date, $harvest_date, $additional_notes);
             $userId = $_SESSION['user_id']['id'];
             $success = $garden->create($userId);
+            var_dump($success);
+            die();
 
             if ($success) {
                 $queryString = http_build_query(['garden-created-success' => 'true']);
@@ -33,8 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header('Location: ' . $redirectUrl);
                 exit();
             } else {
-                $error_message = urlencode("Erro ao salvar no banco de dados.");
-                $queryString = http_build_query(['garden-created-error' => 'true', 'error_message' => $error_message]);
+                $queryString = http_build_query(['garden-created-success' => 'false']);
                 $redirectUrl = '../pages/criar-jardim.php?' . $queryString;
                 header('Location: ' . $redirectUrl);
                 exit();

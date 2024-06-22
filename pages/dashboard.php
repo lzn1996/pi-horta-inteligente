@@ -13,16 +13,7 @@ $gardens = Garden::getAllGardensByUserId($userId);
 
 $gardensQuantity = Garden::count();
 
-$gardenCreatedSuccessMsg = '';
-$gardenCreatedErrorMsg = '';
 
-if (isset($_GET['garden-created-success']) && $_GET['garden-created-success'] === 'true') {
-    $gardenCreatedSuccessMsg = "Jardim criado com sucesso!";
-}
-
-if (isset($_GET['garden-created-error'])) {
-    $gardenCreatedErrorMsg = "Não foi possível criar o jardim." . urldecode($_GET['garden-created-error']);
-}
 
 ?>
 <!DOCTYPE html>
@@ -96,31 +87,28 @@ if (isset($_GET['garden-created-error'])) {
         </aside>
         <div class="main p-3 text-center">
             <div>
-
                 <nav class="navbar navbar-expand-lg bg-white p-3 rounded-lg mb-3">
-                    <h1 class="centrinho">Dashboard</h1>
+                    <h1 class="navbar-brand">Dashboard</h1>
                     <div id="weather" class="ms-auto d-flex align-items-center">
                         <img id="weather-icon" src="" alt="Weather Icon" class="me-2">
                         <span id="weather-description"></span>
                     </div>
                 </nav>
-
-
                 <div class="container">
-                    <div class="row">
+                    <div class="row d-flex justify-content-center" style='display: flex; gap:20px;'>
                         <?php foreach ($gardens as $index => $garden) : ?>
-                            <div class="col-md-3 mb-3">
-                                <div class="card">
-                                    <div class="card-img-container">
-                                        <img src="../uploads/<?php echo $garden['plant_image']; ?>" class="card-img-top" alt="Imagem da Planta">
+                            <div class="col-md-4" style='flex: 1; min-width: 300px; max-width: 300px'>
+                                <div class="card position-relative">
+                                    <div style='height: 200px;'>
+                                        <img src="../uploads/<?php echo $garden['plant_image']; ?>" class="" style='width: 100%; height: 100%; object-fit: cover' alt="Imagem do Jardim">
                                     </div>
                                     <div class="card-body">
-                                        <h5 class="card-title mb-3"><?php echo $garden['plant_name']; ?></h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Tipo: <?php echo $garden['plant_type']; ?></h6>
-                                        <p class="card-text">Umidade do solo: <?php echo $garden['soil_moisture']; ?>%</p>
-                                        <p class="card-text">Data de plantio: <br><?php echo $garden['planting_date']; ?></p>
-                                        <p class="card-text">Data de colheita: <br><?php echo $garden['harvest_date']; ?></p>
-                                        <p class="card-text">Notas adicionais: <?php echo $garden['additional_notes']; ?></p>
+                                        <h5 class="card-title text-center" style="font-size: 1.25rem;"><?php echo $garden['plant_name']; ?></h5>
+                                        <p class="card-text text-center" style="font-size: 0.9rem;">Tipo: <strong><?php echo $garden['plant_type']; ?></strong></p>
+                                        <p class="card-text text-center" style="font-size: 0.9rem;">Umidade do solo: <strong><?php echo $garden['soil_moisture']; ?>%</strong></p>
+                                        <p class="card-text text-center" style="font-size: 0.9rem;">Data de plantio: <strong><?php echo date('d/m/Y', strtotime($garden['planting_date'])); ?></strong></p>
+                                        <p class="card-text text-center" style="font-size: 0.9rem;">Data de colheita: <strong><?php echo $garden['harvest_date'] != '0000-00-00' ? date('d/m/Y', strtotime($garden['harvest_date'])) : "Nenhuma data definida"; ?></strong></p>
+                                        <p class="card-text text-center" style="font-size: 0.9rem;">Notas adicionais: <strong><?php echo $garden['additional_notes']; ?></strong></p>
                                         <div class="humidity-chart-container">
                                             <canvas class="humidityChart" id="humidityChart<?php echo $index; ?>" data-plant-id="plant<?php echo $index + 1; ?>" width="100"></canvas>
                                         </div>
@@ -128,11 +116,6 @@ if (isset($_GET['garden-created-error'])) {
                                 </div>
                             </div>
                         <?php endforeach; ?>
-
-
-                        <!-- Repita o bloco de colunas (col-md-3 mb-3) para adicionar mais cards -->
-
-
                         <div class="container">
                             <div class="row">
                                 <!-- Gráfico de Economia de Água -->

@@ -9,13 +9,16 @@ $gardensQuantity = Garden::count();
 $gardenCreatedSuccessMsg = '';
 $gardenCreatedErrorMsg = '';
 
-if (isset($_GET['garden-created-success']) && $_GET['garden-created-success'] === 'true') {
+
+if (isset($_GET['garden-created-success']) && $_GET['garden-created-success'] == 'true') {
     $gardenCreatedSuccessMsg = "Jardim criado com sucesso!";
 }
 
-if (isset($_GET['garden-created-error'])) {
+
+if (isset($_GET['garden-created-success']) && $_GET['garden-created-success'] == 'false') {
     $gardenCreatedErrorMsg = "Não foi possível criar o jardim." . urldecode($_GET['garden-created-error']);
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -33,11 +36,9 @@ if (isset($_GET['garden-created-error'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../css/dashboard.css">
     <style>
-        <?php if ($gardensQuantity < 2) : ?>#cardsContainer {
+        #cardsContainer {
             justify-content: center;
         }
-
-        <?php endif; ?>
     </style>
 </head>
 
@@ -78,7 +79,7 @@ if (isset($_GET['garden-created-error'])) {
                 <div class="container mt-5">
                     <!-- Navigation Bar -->
                     <nav class="navbar navbar-expand-lg navbar-light bg-light p-3 rounded">
-                        <a class="navbar-brand" href="#">Gerenciar Jardins</a>
+                        <h1 class="navbar-brand" href="#">Gerenciar Jardins</h1>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
@@ -89,7 +90,8 @@ if (isset($_GET['garden-created-error'])) {
 
                                 <?php if ($gardensQuantity > 1) {
                                     echo '
-                                    <a type="button" href="../pages/delete-all-garden.php" class="btn btn-danger rounded" id="deleteSelected">Deletar todos</a>
+                                    <a href="../pages/delete-all-garden.php" class="btn btn-danger rounded" id="deleteSelected" onclick="return confirmDelete();">Deletar todos</a>
+                                    
                                     ';
                                 }
                                 ?>
@@ -113,18 +115,20 @@ if (isset($_GET['garden-created-error'])) {
                     <?php endif; ?>
 
                     <!-- Cards Container -->
-                    <div class="row mt-4" id="cardsContainer" style='display: flex; gap:20px;'>
+                    <div class="row mt-4 d-flex justify-content-center" style='display: flex; gap:20px;'>
                         <?php foreach ($gardens as $garden) : ?>
-                            <div class="col-md-4" style='flex: 1; flex-basis: 300px; max-width: 600px'>
+                            <div class="col-md-4" style='flex: 1; min-width: 300px; max-width: 300px'>
                                 <div class="card position-relative">
-                                    <img src="../uploads/<?php echo $garden['plant_image']; ?>" class="card-img-top" alt="Imagem do Jardim">
+                                    <div style='height: 200px;'>
+                                        <img src="../uploads/<?php echo $garden['plant_image']; ?>" class="" style='width: 100%; height: 100%; object-fit: cover' alt="Imagem do Jardim">
+                                    </div>
                                     <div class="card-body">
-                                        <h5 class="card-title" style="font-size: 1.25rem;"><?php echo $garden['plant_name']; ?></h5>
-                                        <p class="card-text" style="font-size: 0.9rem;">Tipo: <strong><?php echo $garden['plant_type']; ?></strong></p>
-                                        <p class="card-text" style="font-size: 0.9rem;">Umidade do solo: <strong><?php echo $garden['soil_moisture']; ?></strong></p>
-                                        <p class="card-text" style="font-size: 0.9rem;">Data de plantio: <strong><?php echo $garden['planting_date']; ?></strong></p>
-                                        <p class="card-text" style="font-size: 0.9rem;">Data de colheita: <strong><?php echo $garden['harvest_date']; ?></strong></p>
-                                        <p class="card-text" style="font-size: 0.9rem;">Notas adicionais: <strong><?php echo $garden['additional_notes']; ?></strong></p>
+                                        <h5 class="card-title text-center" style="font-size: 1.25rem;"><?php echo $garden['plant_name']; ?></h5>
+                                        <p class="card-text text-center" style="font-size: 0.9rem;">Tipo: <strong><?php echo $garden['plant_type']; ?></strong></p>
+                                        <p class="card-text text-center" style="font-size: 0.9rem;">Umidade do solo: <strong><?php echo $garden['soil_moisture']; ?>%</strong></p>
+                                        <p class="card-text text-center" style="font-size: 0.9rem;">Data de plantio: <strong><?php echo date('d/m/Y', strtotime($garden['planting_date'])); ?></strong></p>
+                                        <p class="card-text text-center" style="font-size: 0.9rem;">Data de colheita: <strong><?php echo $garden['harvest_date'] != '0000-00-00' ? date('d/m/Y', strtotime($garden['harvest_date'])) : "Nenhuma data definida"; ?></strong></p>
+                                        <p class="card-text text-center" style="font-size: 0.9rem;">Notas adicionais: <strong><?php echo $garden['additional_notes']; ?></strong></p>
                                         <div class="position-absolute" style="top: 5px; right: 5px;">
                                             <a href="/pi-horta-inteligente/pages/edit-garden.php/?garden-id=<?= $garden['id'] ?>" class="btn btn-warning"><i class="lni lni-pencil"></i></a>
                                             <a href="/pi-horta-inteligente/pages/delete-garden.php/?garden-id=<?= $garden['id'] ?>" class="btn btn-danger"><i class="lni lni-trash-can"></i></a>
@@ -134,6 +138,24 @@ if (isset($_GET['garden-created-error'])) {
                             </div>
                         <?php endforeach; ?>
                     </div>
+                    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmação de Exclusão</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Tem certeza que deseja deletar todos os jardins? Esta ação não pode ser desfeita.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <a href="../pages/delete-all-garden.php" class="btn btn-danger">Deletar todos</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <!-- Modal -->
                     <div class="modal fade" id="createGardenModal" tabindex="-1" aria-labelledby="createGardenModalLabel" aria-hidden="true">
@@ -195,7 +217,12 @@ if (isset($_GET['garden-created-error'])) {
                 </div>
             </div>
         </div>
-
+        <script>
+            function confirmDelete() {
+                $('#confirmDeleteModal').modal('show');
+                return false;
+            }
+        </script>
         <script src="../js/sidebar.js"></script>
 </body>
 
