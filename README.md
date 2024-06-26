@@ -92,6 +92,3 @@ SQL_DB_USERNAME = root
 * Integração com Arduino para medir a umidade do solo.
 * Adição de mais funcionalidades ao frontend.
 * Melhorias na segurança e performance.
-
-### Melhorias na segurança e performance.
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests no GitHub.
